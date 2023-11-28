@@ -1,7 +1,8 @@
-package com.example.nutrichive
+package com.example.nutrichive.ui.home
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.nutrichive.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
