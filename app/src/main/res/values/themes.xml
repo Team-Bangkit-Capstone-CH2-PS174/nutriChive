@@ -1,8 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.NutriChive" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <style name="Base.Theme.NutriChive" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">#B53232</item>
+        <item name="colorPrimaryVariant">#E86565</item>
+        <item name="colorOnPrimary">#ffffff</item>
+        <item name="colorOnBackground">#001f25</item>
+        <item name= "colorPrimaryContainer">#A9A9A9</item>
+        <item name="colorOnPrimaryContainer">#303030</item>
+        <item name="android:statusBarColor">?attr/colorPrimary</item>
     </style>
 
     <style name="Theme.NutriChive" parent="Base.Theme.NutriChive" />
