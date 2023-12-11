@@ -61,14 +61,37 @@ class HomeFragment : Fragment() {
                 }
             }
         }
+
+        homeViewModel.getRandomRecipes().observe(viewLifecycleOwner) { resultState ->
+            when (resultState) {
+                is ResultState.Success ->{
+                    showLoading(false)
+                    val recipeResponse = resultState.data
+                    if (recipeResponse != null) {
+                        setRandomRecipe(recipeResponse)
+                    }
+                }
+                is ResultState.Error -> {
+                    showLoading(false)
+                }
+                is ResultState.Loading -> {
+                    showLoading(true)
+                }
+            }
+        }
     }
 
     private fun setRecipe(item: List<DataItem>) {
         val adapter = RecipeAdapter()
         adapter.submitList(item)
+        binding.rvAllRecipes.adapter = adapter
+    }
+
+    private fun setRandomRecipe(item: List<DataItem>) {
+        val adapter = RecipeAdapter()
+        adapter.submitList(item)
         binding.rvWesternFood.adapter = adapter
         binding.rvRecommedFood.adapter = adapter
-        binding.rvAllRecipes.adapter = adapter
     }
 
     private fun showLoading(isLoading: Boolean) {

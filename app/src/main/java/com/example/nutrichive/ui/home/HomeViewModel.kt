@@ -9,4 +9,6 @@ import com.example.nutrichive.utils.ResultState
 class HomeViewModel(private val recipesRepository: RecipesRepository): ViewModel() {
 
     fun getAllRecipes(): LiveData<ResultState<List<DataItem>?>> = recipesRepository.getAllRecipes()
+
+    fun getRandomRecipes(): LiveData<ResultState<List<DataItem>?>> = recipesRepository.getRandomRecipes()
 }

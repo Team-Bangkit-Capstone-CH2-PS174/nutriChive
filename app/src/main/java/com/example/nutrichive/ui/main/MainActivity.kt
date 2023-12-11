@@ -1,5 +1,6 @@
 package com.example.nutrichive.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -7,6 +8,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.nutrichive.R
 import com.example.nutrichive.databinding.ActivityMainBinding
+import com.example.nutrichive.ui.camera.CameraActivity
 import com.example.nutrichive.ui.home.HomeFragment
 import com.example.nutrichive.ui.saved.SaveFragment
 
@@ -30,6 +32,11 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_save -> replaceFragment(SaveFragment())
             }
             true
+        }
+
+        binding.fabCamera.setOnClickListener {
+            val intent = Intent(this, CameraActivity::class.java)
+            startActivity(intent)
         }
     }
 

@@ -2,4 +2,11 @@
     <string name="app_name">nutriChive</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="headlinetxt_camera">Mari temukan resep terbaikmu!</string>
+    <string name="bodytxt_camera">Ambil gambar, dan temukan resep dari\n bahan - bahan yang anda ambil!</string>
+    <string name="galeri">Galeri</string>
+    <string name="ambil_gambar">Ambil gambar</string>
+    <string name="back_button">back button</string>
+    <string name="nama_bahan">Nama Bahan</string>
+    <string name="recoment_text">Yeay, berhasil menemukan resep dari bahan makananmu</string>
 </resources>
