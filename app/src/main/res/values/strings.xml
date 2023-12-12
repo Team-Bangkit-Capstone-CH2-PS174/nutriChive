@@ -9,4 +9,14 @@
     <string name="back_button">back button</string>
     <string name="nama_bahan">Nama Bahan</string>
     <string name="recoment_text">Yeay, berhasil menemukan resep dari bahan makananmu</string>
+
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="input_name">Masukkan nama anda</string>
+    <string name="input_email">Masukkan email anda</string>
+    <string name="create_password">Buat password</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="name">Nama</string>
+    <string name="have_account">Tidak punya akun?</string>
 </resources>

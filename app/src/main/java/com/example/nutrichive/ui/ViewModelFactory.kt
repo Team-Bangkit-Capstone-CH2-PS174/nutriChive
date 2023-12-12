@@ -4,15 +4,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.nutrichive.data.di.Injection
 import com.example.nutrichive.data.repository.RecipesRepository
+import com.example.nutrichive.data.user.UserRepository
 import com.example.nutrichive.ui.detail.DetailViewModel
 import com.example.nutrichive.ui.home.HomeViewModel
+import com.example.nutrichive.ui.login.LoginViewModel
 import com.example.nutrichive.ui.search.SearchViewModel
 
-class ViewModelFactory(private val recipesRepository: RecipesRepository) :
+class ViewModelFactory(private val recipesRepository: RecipesRepository, private val userRepository: UserRepository) :
     ViewModelProvider.NewInstanceFactory() {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
+            modelClass.isAssignableFrom(LoginViewModel::class.java) -> {
+                LoginViewModel(userRepository) as T
+            }
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
                 HomeViewModel(recipesRepository) as T
             }
@@ -31,9 +36,9 @@ class ViewModelFactory(private val recipesRepository: RecipesRepository) :
         private var instance: ViewModelFactory? = null
 
         @JvmStatic
-        fun getInstance() =
+        fun getInstance(userRepository: UserRepository) =
             instance ?: synchronized(this) {
-                instance ?: ViewModelFactory(Injection.provideRepository())
+                instance ?: ViewModelFactory(Injection.provideRepository(), userRepository)
             }.also { instance = it }
     }
 }
