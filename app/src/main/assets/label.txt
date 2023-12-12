@@ -1,11 +1,11 @@
 apel
 pisang
-akar bit
+buah bit
 paprika
 kubis
 capsicum
 wortel
-kol bunga
+bunga kol
 cabai
 jagung
 mentimun
@@ -15,11 +15,11 @@ jahe
 anggur
 jalepeno
 Kiwi
-jeruk lemon
+lemon
 selada
-buah mangga
-bawang
-oranye
+mangga
+bawang bombay
+jeruk
 paprika
 buah pir
 kacang polong

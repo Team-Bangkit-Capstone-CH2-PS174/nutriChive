@@ -9,6 +9,7 @@ import com.example.nutrichive.databinding.ActivityRecipeRecomenBinding
 import com.example.nutrichive.ml.ModelV2
 import com.example.nutrichive.ui.camera.CameraActivity
 import org.tensorflow.lite.DataType
+import org.tensorflow.lite.support.common.ops.DequantizeOp
 import org.tensorflow.lite.support.common.ops.NormalizeOp
 import org.tensorflow.lite.support.image.ImageProcessor
 import org.tensorflow.lite.support.image.TensorImage
@@ -37,8 +38,8 @@ class RecipeRecomenActivity : AppCompatActivity() {
         val labels = application.assets.open("label.txt").bufferedReader().readLines()
 
         var imageProcessor = ImageProcessor.Builder()
-            .add(NormalizeOp(0.0f, 255.0f))
             .add(ResizeOp(224, 224, ResizeOp.ResizeMethod.BILINEAR))
+            .add(DequantizeOp(0.0f, 1/255.0f))
             .build()
 
         var tensorImage = TensorImage(DataType.FLOAT32)
