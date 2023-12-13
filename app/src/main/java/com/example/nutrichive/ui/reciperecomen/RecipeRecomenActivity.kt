@@ -5,12 +5,18 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.View
+import androidx.activity.viewModels
+import androidx.recyclerview.widget.GridLayoutManager
+import com.example.nutrichive.data.response.DataItem
 import com.example.nutrichive.databinding.ActivityRecipeRecomenBinding
 import com.example.nutrichive.ml.ModelV2
+import com.example.nutrichive.ui.ViewModelFactory
 import com.example.nutrichive.ui.camera.CameraActivity
+import com.example.nutrichive.ui.home.RecipeAdapter
+import com.example.nutrichive.utils.ResultState
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.support.common.ops.DequantizeOp
-import org.tensorflow.lite.support.common.ops.NormalizeOp
 import org.tensorflow.lite.support.image.ImageProcessor
 import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.image.ops.ResizeOp
@@ -19,11 +25,17 @@ import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 class RecipeRecomenActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityRecipeRecomenBinding
+    private val viewmodel by viewModels<RecipeRecomentViewModel> {
+        ViewModelFactory.getInstance()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRecipeRecomenBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.backButton.setOnClickListener {
+            finish()
+        }
 
         val imageUriString = intent.getStringExtra(CameraActivity.EXTRA_IMAGE_URI)
         val imageUri = Uri.parse(imageUriString)
@@ -63,7 +75,35 @@ class RecipeRecomenActivity : AppCompatActivity() {
         }
 
         binding.titleBahan.text = labels[maxIdx]
-
         model.close()
+
+        binding.rvRecoment.layoutManager = GridLayoutManager(this, 2)
+        viewmodel.recipeRecomen(labels[maxIdx]).observe(this) { resultState ->
+            when (resultState) {
+                is ResultState.Success ->{
+                    showLoading(false)
+                    val recipeResponse = resultState.data
+                    if (recipeResponse != null) {
+                        setRecipe(recipeResponse)
+                    }
+                }
+                is ResultState.Error -> {
+                    showLoading(false)
+                }
+                is ResultState.Loading -> {
+                    showLoading(true)
+                }
+            }
+        }
+    }
+
+    private fun setRecipe(item: List<DataItem>) {
+        val adapter = RecipeAdapter()
+        adapter.submitList(item)
+        binding.rvRecoment.adapter = adapter
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
     }
 }

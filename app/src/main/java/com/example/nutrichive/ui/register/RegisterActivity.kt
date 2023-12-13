@@ -10,7 +10,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.nutrichive.utils.ResultState
 import com.example.nutrichive.databinding.ActivityRegisterBinding
-import com.example.nutrichive.ui.login.LoginActivity
+import com.example.nutrichive.ui.home.HomeFragment
 
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
@@ -49,7 +49,7 @@ class RegisterActivity : AppCompatActivity() {
                         is ResultState.Success -> {
                             binding.progressBar.visibility = View.INVISIBLE
                             Toast.makeText(this, "Akun Berhasil Dibuat", Toast.LENGTH_SHORT).show()
-                            val intent = Intent(this, LoginActivity::class.java)
+                            val intent = Intent(this, HomeFragment::class.java)
                             startActivity(intent)
                         }
                     }
