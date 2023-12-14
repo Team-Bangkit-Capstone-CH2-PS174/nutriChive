@@ -12,6 +12,7 @@ import com.example.nutrichive.data.user.UserPreference
 import com.example.nutrichive.databinding.ActivityMainBinding
 import com.example.nutrichive.ui.camera.CameraActivity
 import com.example.nutrichive.ui.home.HomeFragment
+import com.example.nutrichive.ui.profile.ProfileFragment
 import com.example.nutrichive.ui.saved.SaveFragment
 
 class MainActivity : AppCompatActivity() {
@@ -30,6 +31,7 @@ class MainActivity : AppCompatActivity() {
             when (item.itemId) {
                 R.id.navigation_home -> replaceFragment(HomeFragment())
                 R.id.navigation_save -> replaceFragment(SaveFragment())
+                R.id.navigation_profile -> replaceFragment(ProfileFragment())
             }
             true
         }

@@ -19,4 +19,10 @@
     <string name="password">Password</string>
     <string name="name">Nama</string>
     <string name="have_account">Tidak punya akun?</string>
+    <string name="input_password">Masukkan password anda</string>
+    <string name="username">Username</string>
+    <string name="input_username">Masukkan username anda</string>
+    <string name="nomor_telepon">Nomor telepon</string>
+    <string name="input_nomor_telepon">Masukkan nomor telepon anda</string>
+    <string name="logout">Logout</string>
 </resources>

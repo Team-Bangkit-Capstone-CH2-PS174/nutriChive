@@ -4,61 +4,134 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.nutrichive.utils.ResultState
 import com.example.nutrichive.databinding.ActivityRegisterBinding
-import com.example.nutrichive.ui.home.HomeFragment
+import com.example.nutrichive.ui.customView.EditTextEmail
+import com.example.nutrichive.ui.customView.MyButton
+import com.example.nutrichive.ui.customView.MyEditText
+import com.example.nutrichive.ui.login.LoginActivity
+import com.example.nutrichive.ui.profile.UserViewModelFactory
 
 class RegisterActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityRegisterBinding
-    private val viewModel: RegisterViewModel by viewModels {
-        RegisterViewModel.RegisterViewModelFactory.getInstance()
+    private lateinit var myButton: MyButton
+    private lateinit var editTextEmail: EditTextEmail
+    private lateinit var editTextPassword: MyEditText
+
+    private val viewModel by viewModels<RegisterViewModel> {
+        UserViewModelFactory.getInstance(this)
     }
     override fun onCreate(savedInstanceState: Bundle?){
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        supportActionBar?.hide()
 
-        setupView()
+        myButton = binding.registerButton
+        editTextEmail = binding.emailEditText
+        editTextPassword = binding.passwordEditText
+
+        myButton.setOnClickListener {
+            register()
+        }
+
+        editTextEmail.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+            }
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+            }
+            override fun afterTextChanged(s: Editable) {
+                setMyButtonEnable()
+            }
+        })
+
+        editTextPassword.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+            }
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+            }
+            override fun afterTextChanged(s: Editable) {
+                setMyButtonEnable()
+            }
+        })
+
+        binding.apply {
+            nameEditText.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                }
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                }
+                override fun afterTextChanged(s: Editable) {
+                    setMyButtonEnable()
+                }
+            })
+            usernameEditText.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                }
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                }
+                override fun afterTextChanged(s: Editable) {
+                    setMyButtonEnable()
+                }
+            })
+            phoneNumberEditText.addTextChangedListener(object : TextWatcher {
+                override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {
+                }
+                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                }
+                override fun afterTextChanged(s: Editable) {
+                    setMyButtonEnable()
+                }
+            })
+        }
+        setMyButtonEnable()
         playAnimation()
     }
 
-    private fun setupView(){
+    private fun setMyButtonEnable() {
+        val email = editTextEmail.text
+        val password = editTextPassword.text
+        val name = binding.nameEditText.text
+        val username = binding.usernameEditText.text
+        val phoneNumber = binding.phoneNumberEditText.text
+
+        myButton.isEnabled = (password.toString().isNotEmpty()) && (email.toString().isNotEmpty())
+                && (name.toString().isNotEmpty()) && (username.toString().isNotEmpty()) && (phoneNumber.toString().isNotEmpty())
+    }
+
+    private fun register(){
         binding.registerButton.setOnClickListener{
             val name = binding.nameEditText.text.toString()
             val email = binding.emailEditText.text.toString()
             val password = binding.passwordEditText.text.toString()
-            val resultState = viewModel.registerUser(name, email, password)
-            if (!name.isNullOrEmpty() && !email.isNullOrEmpty() && !password.isNullOrEmpty()) {
-                resultState.observe(this) {
-                    when (it) {
+            val username = binding.usernameEditText.text.toString()
+            val phoneNumber = binding.phoneNumberEditText.text.toString()
+            viewModel.registerUser(name, email, password, username, phoneNumber).observe(this) {result ->
+                if (result != null) {
+                    when (result) {
                         is ResultState.Loading -> {
-                            binding.progressBar.visibility = View.VISIBLE
+                            showLoading(true)
                         }
-
-                        is ResultState.Error -> {
-                            binding.progressBar.visibility = View.INVISIBLE
-                            val error = it.error
-                            Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
-                        }
-
                         is ResultState.Success -> {
-                            binding.progressBar.visibility = View.INVISIBLE
-                            Toast.makeText(this, "Akun Berhasil Dibuat", Toast.LENGTH_SHORT).show()
-                            val intent = Intent(this, HomeFragment::class.java)
+                            showLoading(false)
+                            val intent = Intent(this, LoginActivity::class.java)
                             startActivity(intent)
+                            finish()
+                        }
+                        is ResultState.Error -> {
+                            showLoading(false)
+                            showToast(result.error)
                         }
                     }
                 }
-            }else{
-                if (name.isNullOrEmpty())binding.nameEditText.error = "Nama tidak boleh kosong!"
-                if (email.isNullOrEmpty())binding.emailEditText.error = "Email tidak boleh kosong!"
-                if (password.isNullOrEmpty())binding.passwordEditText.error = "Password tidak boleh kurang dari 8 karakter!"
             }
+//
         }
     }
     private fun playAnimation(){
@@ -72,6 +145,14 @@ class RegisterActivity : AppCompatActivity() {
             ObjectAnimator.ofFloat(binding.tvName, View.ALPHA, 1f).setDuration(100)
         val nameEditTextLayout =
             ObjectAnimator.ofFloat(binding.nameEditTextLayout, View.ALPHA, 1f).setDuration(100)
+        val usernameTextView =
+            ObjectAnimator.ofFloat(binding.tvUsername, View.ALPHA, 1f).setDuration(100)
+        val usernameEditTextLayout =
+            ObjectAnimator.ofFloat(binding.usernameEditTextLayout, View.ALPHA, 1f).setDuration(100)
+        val phoneNumberTextView =
+            ObjectAnimator.ofFloat(binding.tvPhoneNumber, View.ALPHA, 1f).setDuration(100)
+        val phoneNumberEditTextLayout =
+            ObjectAnimator.ofFloat(binding.phoneNumberEditTextLayout, View.ALPHA, 1f).setDuration(100)
         val emailTextView =
             ObjectAnimator.ofFloat(binding.tvEmail, View.ALPHA, 1f).setDuration(100)
         val emailEditTextLayout =
@@ -87,6 +168,10 @@ class RegisterActivity : AppCompatActivity() {
                 title,
                 nameTextView,
                 nameEditTextLayout,
+                usernameTextView,
+                usernameEditTextLayout,
+                phoneNumberTextView,
+                phoneNumberEditTextLayout,
                 emailTextView,
                 emailEditTextLayout,
                 passwordTextView,
@@ -95,5 +180,13 @@ class RegisterActivity : AppCompatActivity() {
             )
             startDelay = 100
         }.start()
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

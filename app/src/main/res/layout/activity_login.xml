@@ -62,7 +62,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tvEmail"
         tools:alpha="100">
 
-        <com.google.android.material.textfield.TextInputEditText
+        <com.example.nutrichive.ui.customView.EditTextEmail
             android:id="@+id/emailEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -100,17 +100,18 @@
         app:layout_constraintTop_toBottomOf="@+id/tvPassword"
         tools:alpha="100">
 
-        <com.example.nutrichive.ui.MyEditText
+        <com.example.nutrichive.ui.customView.MyEditText
             android:id="@+id/passwordEditText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:ems="10"
+            android:hint="@string/input_password"
             android:inputType="textPassword"
             tools:ignore="SpeakableTextPresentCheck"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
+    <com.example.nutrichive.ui.customView.MyButton
         android:id="@+id/loginButton"
         android:layout_width="0dp"
         android:layout_height="64dp"
@@ -118,8 +119,8 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
         android:alpha="0"
-        android:backgroundTint="?attr/colorPrimary"
         android:text="@string/login"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordEditTextLayout"
@@ -147,10 +148,11 @@
         android:id="@+id/registerButton"
         android:layout_width="0dp"
         android:layout_height="64dp"
+        android:layout_marginTop="8dp"
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:alpha="0"
-        android:backgroundTint="?attr/colorPrimary"
+        android:background="@drawable/bg_button"
         android:textColor="@color/white"
         android:text="@string/register"
         app:layout_constraintEnd_toEndOf="parent"
@@ -176,7 +178,7 @@
         android:layout_height="64dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintGuide_percent="0.4"
+        app:layout_constraintGuide_percent="0.34"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

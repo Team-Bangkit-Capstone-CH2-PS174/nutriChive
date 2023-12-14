@@ -4,10 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.nutrichive.data.di.Injection
 import com.example.nutrichive.data.repository.RecipesRepository
-import com.example.nutrichive.data.user.UserRepository
 import com.example.nutrichive.ui.detail.DetailViewModel
 import com.example.nutrichive.ui.home.HomeViewModel
-import com.example.nutrichive.ui.login.LoginViewModel
 import com.example.nutrichive.ui.reciperecomen.RecipeRecomentViewModel
 import com.example.nutrichive.ui.search.SearchViewModel
 

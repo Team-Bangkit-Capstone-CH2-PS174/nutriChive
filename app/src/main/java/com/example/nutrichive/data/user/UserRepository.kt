@@ -1,108 +1,96 @@
 package com.example.nutrichive.data.user
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.liveData
 import com.example.nutrichive.data.api.ApiService
 import com.example.nutrichive.utils.ResultState
-import com.example.nutrichive.data.response.LoginResponse
-import com.example.nutrichive.data.response.RegisterResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
+import org.json.JSONException
+import org.json.JSONObject
 
-class UserRepository private constructor(private val  apiService: ApiService) {
+class UserRepository private constructor(private val  apiService: ApiService, private val userPreference: UserPreference) {
 
-    private val loginResultState = MediatorLiveData<ResultState<LoginResponse>>()
-    private val registerResultState = MediatorLiveData<ResultState<RegisterResponse>>()
+    fun register(name: String, email: String, password: String, username: String, phoneNumber: String) = liveData {
+        emit(ResultState.Loading)
+        try {
+            val response = withContext(Dispatchers.IO) {
+                apiService.register(name, email, password, username, phoneNumber).execute()
+            }
+            if (response.isSuccessful) {
+                emit(ResultState.Success(response.body()))
+            } else {
+                val errorMessage = response.errorBody()?.string() ?: "{\"error\":1,\"message\":\"email sudah terdaptar\"}"
+                try {
+                    val errorJson = JSONObject(errorMessage)
+                    val error = errorJson.optBoolean("error", false)
+                    val message = errorJson.optString("message")
 
-    fun register(
-        name: String,
-        email: String,
-        password: String
-    ): LiveData<ResultState<RegisterResponse>> {
-        registerResultState.value = ResultState.Loading
-        val client = apiService.register(
-            name,
-            email,
-            password
-        )
-
-        client.enqueue(object : Callback<RegisterResponse> {
-            override fun onResponse(
-                call: Call<RegisterResponse>,
-                response: Response<RegisterResponse>
-            ) {
-                if (response.isSuccessful) {
-                    val registerInfo = response.body()
-                    if (registerInfo != null) {
-                        registerResultState.value = ResultState.Success(registerInfo)
+                    if (error) {
+                        emit(ResultState.Error(message))
                     } else {
-                        registerResultState.value = ResultState.Error(REGISTER_ERROR_MESSAGE)
-                        Log.e(TAG, "Failed: Register Info is null")
+                        emit(ResultState.Error("An error occurred."))
                     }
-                } else {
-                    registerResultState.value = ResultState.Error(REGISTER_ERROR_MESSAGE)
-                    Log.e(TAG, "Failed: Response Unsuccessful - ${response.message()}")
+                } catch (e: JSONException) {
+                    emit(ResultState.Error("An error occurred."))
                 }
+                Log.e("register", "onFailure: ${response.message()}")
             }
-
-            override fun onFailure(call: Call<RegisterResponse>, t: Throwable) {
-                registerResultState.value = ResultState.Error(REGISTER_ERROR_MESSAGE)
-                Log.e(TAG, "Failed: Response Failure - ${t.message.toString()}")
-            }
-
-        })
-
-        return registerResultState
+        } catch (e: Exception) {
+            Log.e("register", "onFailure: ${e.message}")
+        }
     }
 
-    fun login(
-        email: String,
-        password: String
-    ): LiveData<ResultState<LoginResponse>> {
-        loginResultState.value = ResultState.Loading
-        val client = apiService.login(
-            email,
-            password
-        )
+    fun login(email: String, password: String)= liveData {
+        emit(ResultState.Loading)
+        try {
+            val response = withContext(Dispatchers.IO) {
+                apiService.login(email, password).execute()
+            }
+            if (response.isSuccessful) {
+                emit(ResultState.Success(response.body()))
+            } else {
+                val errorMessage = response.errorBody()?.string() ?: "{\"error\":1,\"message\":\"email sudah terdaptar.\"}"
+                try {
+                    val errorJson = JSONObject(errorMessage)
+                    val error = errorJson.optBoolean("error", false)
+                    val message = errorJson.optString("message")
 
-        client.enqueue(object : Callback<LoginResponse> {
-            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                if (response.isSuccessful) {
-                    val loginInfo = response.body()
-                    if (loginInfo != null) {
-                        loginResultState.value = ResultState.Success(loginInfo)
+                    if (error) {
+                        emit(ResultState.Error(message))
                     } else {
-                        loginResultState.value = ResultState.Error(LOGIN_ERROR_MESSAGE)
-                        Log.e(TAG, "Failed: Login Info is null")
+                        emit(ResultState.Error("An error occurred."))
                     }
-                } else {
-                    loginResultState.value = ResultState.Error(LOGIN_ERROR_MESSAGE)
-                    Log.e(TAG, "Failed: Response Unsuccessful - ${response.message()}")
+                } catch (e: JSONException) {
+                    emit(ResultState.Error("An error occurred."))
                 }
+                Log.e("register", "onFailure: ${response.message()}")
             }
+        } catch (e: Exception) {
+            Log.e("register", "onFailure: ${e.message}")
+        }
+    }
 
-            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                loginResultState.value = ResultState.Error(LOGIN_ERROR_MESSAGE)
-                Log.e(TAG, "Failed: Response Failure - ${t.message.toString()}")
-            }
-        })
+    suspend fun setSession(user: UserModel) {
+        userPreference.setSession(user)
+    }
 
-        return loginResultState
+    fun getSession(): Flow<UserModel> {
+        return userPreference.getSession()
+    }
+
+    suspend fun logout() {
+        userPreference.logout()
     }
 
     companion object {
-        private val TAG = UserRepository::class.java.simpleName
-        private const val LOGIN_ERROR_MESSAGE = "Login failed, please try again."
-        private const val REGISTER_ERROR_MESSAGE = "Register failed, please try again."
-
         @Volatile
         private var instance: UserRepository? = null
 
-        fun getInstance(apiService: ApiService) =
+        fun getInstance(apiService: ApiService, userPreference: UserPreference) =
             instance ?: synchronized(this) {
-                instance ?: UserRepository(apiService)
+                instance ?: UserRepository(apiService, userPreference)
             }.also { instance = it }
     }
 }
