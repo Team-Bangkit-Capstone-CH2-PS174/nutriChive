@@ -52,7 +52,7 @@ class CategoryFragment : Fragment() {
 
         binding.rvCategory.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
 
-        homeViewModel.getAllRecipes().observe(viewLifecycleOwner) { resultState ->
+        homeViewModel.getRandomRecipes().observe(viewLifecycleOwner) { resultState ->
             when (resultState) {
                 is ResultState.Success ->{
                     showLoading(false)

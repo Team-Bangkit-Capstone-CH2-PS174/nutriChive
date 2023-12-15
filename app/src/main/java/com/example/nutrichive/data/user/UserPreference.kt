@@ -17,6 +17,10 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
     suspend fun setSession(user: UserModel){
         dataStore.edit { preference ->
             preference[TOKEN_KEY] = user.token ?: ""
+            preference[NAME_KEY] = user.name ?: ""
+            preference[USERNAME_KEY] = user.username ?: ""
+            preference[PHONENUMBER_KEY] = user.phoneNumber ?: ""
+            preference[EMAIL_KEY] = user.email ?: ""
             preference[LOGIN_KEY] = true
         }
     }
@@ -25,6 +29,10 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         return dataStore.data.map { preference ->
             UserModel(
                 preference[TOKEN_KEY] ?: "",
+                preference[NAME_KEY] ?: "",
+                preference[USERNAME_KEY] ?: "",
+                preference[PHONENUMBER_KEY] ?: "",
+                preference[EMAIL_KEY] ?: "",
                 preference[LOGIN_KEY] ?: false
             )
         }
@@ -40,6 +48,9 @@ class UserPreference private constructor(private val dataStore: DataStore<Prefer
         private var INSTANCE: UserPreference? = null
 
         private val NAME_KEY = stringPreferencesKey("name")
+        private val USERNAME_KEY = stringPreferencesKey("username")
+        private val PHONENUMBER_KEY = stringPreferencesKey("phoneNumber")
+        private val EMAIL_KEY = stringPreferencesKey("email")
         private val TOKEN_KEY = stringPreferencesKey("token")
         private val LOGIN_KEY = booleanPreferencesKey("isLogin")
 

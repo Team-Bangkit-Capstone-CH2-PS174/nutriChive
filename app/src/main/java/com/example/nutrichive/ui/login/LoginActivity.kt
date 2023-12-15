@@ -99,7 +99,11 @@ class LoginActivity : AppCompatActivity() {
                             showLoading(false)
                             val loginResult = result.data?.data
                             val token = loginResult?.token
-                            viewModel.setSession(UserModel(token, true))
+                            val name = loginResult?.data?.name
+                            val username = loginResult?.data?.username
+                            val phoneNumber = loginResult?.data?.phoneNumber
+                            val email = loginResult?.data?.email
+                            viewModel.setSession(UserModel(token, name, username, phoneNumber, email, true))
                             val intent = Intent(this, MainActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                             startActivity(intent)

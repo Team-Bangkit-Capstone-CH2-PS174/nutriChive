@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.nutrichive.data.response.DataItem
 import com.example.nutrichive.databinding.ActivitySearchBinding
@@ -56,6 +57,7 @@ class SearchActivity : AppCompatActivity() {
         val adapter = RecipeAdapter()
         adapter.submitList(item)
         binding.rvAllRecipes.adapter = adapter
+        binding.imgNoData.isVisible = item.isEmpty()
     }
 
     private fun showLoading(isLoading: Boolean) {

@@ -72,6 +72,100 @@ class UserRepository private constructor(private val  apiService: ApiService, pr
         }
     }
 
+    fun addFavorite(token: String?, idRecipe: String) = liveData {
+        emit(ResultState.Loading)
+        try {
+            val response = withContext(Dispatchers.IO) {
+                apiService.addFavorite("Bearer $token", idRecipe).execute()
+            }
+            if (response.isSuccessful) {
+                emit(ResultState.Success(response.body()))
+            } else {
+                val errorMessage = response.errorBody()?.string() ?: "{\"error\":1,\"message\":\"email sudah terdaptar\"}"
+                try {
+                    val errorJson = JSONObject(errorMessage)
+                    val error = errorJson.optBoolean("error", false)
+                    val message = errorJson.optString("message")
+
+                    if (error) {
+                        emit(ResultState.Error(message))
+                    } else {
+                        emit(ResultState.Error("An error occurred."))
+                    }
+                } catch (e: JSONException) {
+                    emit(ResultState.Error("An error occurred."))
+                }
+                Log.e("favorite", "onFailure: ${response.message()}")
+            }
+        } catch (e: Exception) {
+            Log.e("favorite", "onFailure: ${e.message}")
+        }
+    }
+
+    fun dropFavorite(token: String?, idRecipe: String) = liveData {
+        emit(ResultState.Loading)
+        try {
+            val response = withContext(Dispatchers.IO) {
+                apiService.dropFavorite("Bearer $token", idRecipe).execute()
+            }
+            if (response.isSuccessful) {
+                emit(ResultState.Success(response.body()))
+            } else {
+                val errorMessage = response.errorBody()?.string() ?: "{\"error\":1,\"message\":\"email sudah terdaptar\"}"
+                try {
+                    val errorJson = JSONObject(errorMessage)
+                    val error = errorJson.optBoolean("error", false)
+                    val message = errorJson.optString("message")
+
+                    if (error) {
+                        emit(ResultState.Error(message))
+                    } else {
+                        emit(ResultState.Error("An error occurred."))
+                    }
+                } catch (e: JSONException) {
+                    emit(ResultState.Error("An error occurred."))
+                }
+                Log.e("unFavorite", "onFailure: ${response.message()}")
+            }
+        } catch (e: Exception) {
+            Log.e("unFavorite", "onFailure: ${e.message}")
+        }
+    }
+
+    fun searchFav(token: String?, idRecipe: String) = liveData {
+        emit(ResultState.Loading)
+        try {
+            val response = withContext(Dispatchers.IO) {
+                apiService.searchFav("Bearer $token", idRecipe).execute()
+            }
+            if (response.isSuccessful) {
+                emit(ResultState.Success(response.body()?.data))
+            } else {
+                emit(ResultState.Error("Data Gagal Dimuat"))
+                Log.d("Search Favorite", "onFailure: ${response.message()}")
+            }
+        } catch (e: Exception) {
+            Log.d("Search Favorite", "onFailure: ${e.message}")
+        }
+    }
+
+    fun getListFavorite(token: String?) = liveData {
+        emit(ResultState.Loading)
+        try {
+            val response = withContext(Dispatchers.IO) {
+                apiService.getListFavorite("Bearer $token").execute()
+            }
+            if (response.isSuccessful){
+                emit(ResultState.Success(response.body()?.data))
+            } else {
+                emit(ResultState.Error("Data Gagal Dimuat"))
+                Log.d("All Recipes", "onFailure: ${response.message()}")
+            }
+        } catch (e: Exception) {
+            Log.d("All Recipes", "onFailure: ${e.message}")
+        }
+    }
+
     suspend fun setSession(user: UserModel) {
         userPreference.setSession(user)
     }

@@ -30,7 +30,7 @@ class RecipesRepository(private  val apiService: ApiService) {
         emit(ResultState.Loading)
         try {
             val response = withContext(Dispatchers.IO) {
-                apiService.getAllRecipes().execute()
+                apiService.getRandomRecipes().execute()
             }
             if (response.isSuccessful){
                 emit(ResultState.Success(response.body()?.data?.shuffled()?.take(5)))
@@ -70,10 +70,10 @@ class RecipesRepository(private  val apiService: ApiService) {
                 emit(ResultState.Success(response.body()?.data))
             } else {
                 emit(ResultState.Error("Data Gagal Dimuat"))
-                Log.d("Detail Recipes", "onFailure: ${response.message()}")
+                Log.d("Search Recipes", "onFailure: ${response.message()}")
             }
         } catch (e: Exception) {
-            Log.d("Detail Recipes", "onFailure: ${e.message}")
+            Log.d("Search Recipes", "onFailure: ${e.message}")
         }
     }
 

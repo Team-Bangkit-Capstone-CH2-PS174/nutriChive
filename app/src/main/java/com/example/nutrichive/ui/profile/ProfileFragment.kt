@@ -33,7 +33,10 @@ class ProfileFragment : Fragment() {
             if (!user.isLogin) {
                 startActivity(Intent(requireActivity(), LoginActivity::class.java))
             }
-            binding.token.text = user.token
+            binding.nameUser.text = user.name
+            binding.usernameUser.text = user.username
+            binding.emailUser.text = user.email
+            binding.phoneUser.text = user.phoneNumber
         }
         binding.logoutButton.setOnClickListener {
             viewModel.logout()

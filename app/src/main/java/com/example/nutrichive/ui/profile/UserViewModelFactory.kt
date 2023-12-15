@@ -7,6 +7,7 @@ import com.example.nutrichive.data.di.Injection
 import com.example.nutrichive.data.user.UserRepository
 import com.example.nutrichive.ui.login.LoginViewModel
 import com.example.nutrichive.ui.register.RegisterViewModel
+import com.example.nutrichive.ui.saved.SaveViewModel
 
 class UserViewModelFactory(private val userRepository: UserRepository) :
     ViewModelProvider.NewInstanceFactory() {
@@ -15,6 +16,9 @@ class UserViewModelFactory(private val userRepository: UserRepository) :
         return when {
             modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
                 ProfileViewModel(userRepository) as T
+            }
+            modelClass.isAssignableFrom(SaveViewModel::class.java) -> {
+                SaveViewModel(userRepository) as T
             }
             modelClass.isAssignableFrom(RegisterViewModel::class.java) -> {
                 RegisterViewModel(userRepository) as T

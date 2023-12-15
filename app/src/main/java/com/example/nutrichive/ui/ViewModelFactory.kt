@@ -17,9 +17,6 @@ class ViewModelFactory(private val recipesRepository: RecipesRepository) :
             modelClass.isAssignableFrom(HomeViewModel::class.java) -> {
                 HomeViewModel(recipesRepository) as T
             }
-            modelClass.isAssignableFrom(DetailViewModel::class.java) -> {
-                DetailViewModel(recipesRepository) as T
-            }
             modelClass.isAssignableFrom(SearchViewModel::class.java) -> {
                 SearchViewModel(recipesRepository) as T
             }
