@@ -34,6 +34,15 @@ class SaveFragment : Fragment() {
 
         binding.rvFavRecipes.layoutManager = GridLayoutManager(requireActivity(), 2)
 
+        showData()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        showData()
+    }
+
+    private fun showData() {
         viewModel.getSession().observe(viewLifecycleOwner) { user ->
             if (!user.isLogin) {
                 startActivity(Intent(requireActivity(), LoginActivity::class.java))
@@ -57,7 +66,6 @@ class SaveFragment : Fragment() {
                 }
             }
         }
-
     }
 
     private fun setRecipe(item: List<DataItem2>) {
