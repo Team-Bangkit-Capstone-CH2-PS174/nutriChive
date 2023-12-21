@@ -1,16 +1,23 @@
 # NutriChive : Food Ingredient, Recipe, and Nutrition Archive
+The Food Ingredient Identification and Recipe Recommendation Mobile Application that helps users identify various food ingredients according to the data we have trained with our model through the user's smartphone's camera or uploaded photos.
 
 ## Kelompok CH2-PS174
 
-1. (ML) M312BSY0473 – Andika Kavin Septiano – Universitas Sebelas Maret
-2. (ML) M312BSY0914 – Muhammad Anang Fathur Rohman – Universitas Sebelas Maret
-3. (ML) M312BSY1043 – Mohammad Al Furqon – Universitas Sebelas Maret
-4. (CC) C157BSY4206 – Dani Hidayat – Universitas Mayasari Bakti
-5. (CC) C183BSY3336 – Iqbal Dwi Nur Khoirul Anam – Universitas Amikom Yogyakarta
-6. (MD) A157BSY2857 – Agung Muhammad Albaehaqi – Universitas Mayasari Bakti
-7. (MD) A296BSX2632 – Aisyatuz Zahroh – Universitas Pembangunan Nasional Veteran Jawa Timur
+| No | Path             | Name                               | University                                 | GitHub Profile                                |
+|----|------------------|------------------------------------|--------------------------------------------|-----------------------------------------------|
+| 1  | (ML) M312BSY0473 | Andika Kavin Septiano               | Universitas Sebelas Maret                  | [ndkvin](https://github.com/ndkvin)             |
+| 2  | (ML) M312BSY0914 | Muhammad Anang Fathur Rohman        | Universitas Sebelas Maret                  | [anangfathh](https://github.com/anangfathh)    |
+| 3  | (ML) M312BSY1043 | Mohammad Al Furqon                  | Universitas Sebelas Maret                  | [Alfurqon02](https://github.com/Alfurqon02)    |
+| 4  | (CC) C157BSY4206 | Dani Hidayat                         | Universitas Mayasari Bakti                 | [DaniHidayat](https://github.com/DaniHidayat)  |
+| 5  | (CC) C183BSY3336 | Iqbal Dwi Nur Khoirul Anam           | Universitas Amikom Yogyakarta              | [iqbaldwinur](https://github.com/iqbaldwinur)  |
+| 6  | (MD) A157BSY2857 | Agung Muhammad Albaehaqi             | Universitas Mayasari Bakti                 | [agung-bae14](https://github.com/agung-bae14) |
+| 7  | (MD) A296BSX2632 | Aisyatuz Zahroh                      | Universitas Pembangunan Nasional Veteran Jawa Timur | [Aisyatuzz](https://github.com/Aisyatuzz)  |
 
 ## Mobile Development Documentation
+
+![App](assets/Pertama.png)
+![App2](assets/Kedua.png)
+
 This repository contains the Android app for the NutriChive project, developed using Kotlin to fulfill the requirements of the Bangkit Capstone Project.
 
 - ### Features
@@ -30,3 +37,26 @@ This repository contains the Android app for the NutriChive project, developed u
   - **Save Recipe:** Allow users to save their favorite recipes for future reference, creating a personalized collection and fostering user engagement.
 
 These features collectively contribute to an enriching and comprehensive user experience, catering to the diverse needs of individuals passionate about cooking and exploring new recipes.
+- ### Dependencies
+  - Lifecycle & Livedata
+  - DataStore
+  - Navigation Component
+  - kotlinx-coroutines
+  - Tensorflow Lite
+  - Glide
+  - Retrofit 2
+  - Shimmer Android
+
+## Clone the Repository
+1. Open Android Studio on your computer.
+2. Click on "Get from Version Control" in the welcome screen.
+3. Choose Git as the version control system.
+4. Copy the repository URL of the project you want to clone.
+
+   ```bash
+   https://github.com/Team-Bangkit-Capstone-CH2-PS174/nutriChive.git
+   ```
+
+5. Paste the URL in the "URL" field of Android Studio.
+6. Select a directory on your machine where you want to save the project.
+7. Click on "Clone" to initiate the cloning process.
